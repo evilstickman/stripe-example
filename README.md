@@ -1,14 +1,14 @@
 # [backand-Payment-example (Stripe/PayPal)](https://github.com/backand/stripe-example/)
 
-### Quick-and-Easy Third Party Integration With Stripe and PayPal
+# Quick-and-Easy Third Party Integration With Stripe and PayPal
 
-This is an example app demonstrating how to integrate Stripe with a Backand application. Stripe is a popular third-party API offering payment-related functionality, allowing you to accept payments for yourself as well as your customers. Whether you’re building a marketplace, mobile app, online storefront, or subscription service, [Stripe](https://stripe.com) has the features you need.
+This is an example app demonstrating how to integrate Stripe and PayPal with a Backand application. Stripe is a popular third-party API offering payment-related functionality, allowing you to accept payments for yourself as well as your customers. Whether you’re building a marketplace, mobile app, online storefront, or subscription service, [Stripe](https://stripe.com) has the features you need. PayPal, by comparison, is the hands-down market leader when it comes to payment processing on the internet. With functionality ranging from express checkout to invoicing, odds are that [PayPal](https://www.paypal.com) has something to meet your needs.
 
 Payment systems should always be built with a solid back-end, in order to protect the security of your users and customers. With Backand's server-side actions, we'll be able to provide the piece of mind that comes with a custom-built server back end, but without the expense and effort.
 
-In this example we will use **angular-stripe** to wrap Stripe's stripe.js file. You can either use this in your own applications, or make use of any other solution you choose.
+In this example we will use **angular-stripe** to wrap Stripe's stripe.js file for the Stripe portion of the example. You can either use this in your own applications, or make use of any other solution you choose.
 
-## Prerequisites
+# Prerequisites
 
 You will need to have **node.js** set up on your machine before beginning. Once you've set up Node, you'll also need to install **gulp** and **bower**. Luckily, Node Package Manager (NPM) makes this simple:
 
@@ -16,7 +16,7 @@ You will need to have **node.js** set up on your machine before beginning. Once 
   $ npm -g install gulp bower
 ```
     
-## Getting started
+# Getting started
 
 First, we need to create an account with Backand and create the base app:
 
@@ -50,18 +50,17 @@ Once the dependencies have been installed, we need to update the app's code to p
     4. Replace **Your-Anonymous-Token** in your local copy of app.js with the value copied from the Backand dashboard.
   
 
-## Configuring the App
+# Configuring the App
 
 Below we'll configure your Backand application. To get started:
 
 1. Log in to [Backand](https://www.backand.com) using your admin login information
 2. Open the application that you created in the previous section.
 
-### For Paypal integration please see [here](#paypal)
+# Provider Integrations
+Below we'll cover each provider in sequence - first [Stripe](#paypal), then [PayPal](#paypal).
 
-# Stripe
-
-
+## Stripe
  
 ### Backand Action
 
@@ -114,9 +113,9 @@ At this point, your application is running! You can access it at **[http://local
 
 From this point, we only have a few steps left before we can complete our Stripe integration. Review the following code and copy it into your app in order to get your Backand app talking to Stripe.
 
-#### Update publish key
+#### Update your publishable key
 
-In the file **client/src/app/app.js**, update your publishable Stripe key. You can copy it from your Stripe dashboard at https://dashboard.stripe.com/account/apikeys, or you can use Backand's test account in the code below. The resulting code will look like the following:
+In the file **client/src/app/app.js**, update your publishable Stripe key. You can copy it from your Stripe dashboard at https://dashboard.stripe.com/account/apikeys, or you can use Backand's test account key in the code below. The resulting code will look like the following:
 
 ```javascript
   .config(function (stripeProvider) {
@@ -186,7 +185,7 @@ What this means is that, when adding new functionality, we can handle it through
 
 ## A Note on Security
 
-As Stripe is a payments platform, user security will be high on the list of priorities for developers using Backand to drive a Stripe integration. Below are a few notes on the security concerns associated with a payments platform, and details on how Backand addresses these issues.
+As Stripe and PayPal are payments platforms, user security will be high on the list of priorities for developers using Backand to drive a payments integration. Below are a few notes on the security concerns associated with a payments platform, and details on how Backand addresses these issues.
 
 #### PCI DSS Compliance
 
@@ -210,12 +209,12 @@ Additionally, it's important to note that the method we use with Stripe creates 
 Use the following steps to add an on-demand action that registers a payment with PayPal:
 
 1. Open the Action tab for the `items` object (which can be found under the "Objects" menu in the Backand dashboard)
-2. Click "+New Action" and enter the following details in the fields provided. Note that some fields for a step won't be available until the prior step has been completed:
+2. Click "+New Action" and enter the following details in the fields provided. Note that some fields won't be available until the prior step has been completed:
   1. **Name:** PayPalPayment
   2. **Event Trigger:** 'On Demand - Execute via REST API'
   3. **Type:** Server Side JavaScript Code
   4. **Input Parameters:** amount
-  5. **JavaScript Code:** Past this code under the `// write your code here` comment, and before the `return {}` command
+  5. **JavaScript Code:** Paste this code under the `// write your code here` comment, and before the `return {}` command
 
     ```javascript
     
@@ -300,19 +299,19 @@ Use the following steps to add an on-demand action that registers a payment with
       }
     }
     ```
-  6. Replace the following items in the code above with your specific application configuration
-    1. PayPal ClientId and Secret
-    2. The return_url and cancel_url you want PayPal to return to after the user approves/declines the payment in PayPal pages
-    3. currency ( can be used as a parameter)
-    4. When moving to production , need to replace PayPal sandbox url with the live one
+  6. Replace the following items in the code above with your specific application configuration details:
+    1. Your PayPal ClientId and Secret
+    2. The return_url and cancel_url you want PayPal to return to after the user has completed Paypal's approval process
+    3. The currency for the payment ( Note - this can be provided and used as a parameter)
+    4. The PayPal URL ( Note - make sure to change the sandbox URL to the live version when deploying)
   7. Press "Save"
   
-3. Click "+New Action" and enter the following details in the fields provided. Note that some fields for a step won't be available until the prior step has been completed:
+3. Click "+New Action" and enter the following details in the fields provided. Note that some fields won't be available until the prior step has been completed:
   1. **Name:** PayPalApproval
   2. **Event Trigger:** 'On Demand - Execute via REST API'
   3. **Type:** Server Side JavaScript Code
   4. **Input Parameters:** amount
-  5. **JavaScript Code:** Past this code under the `// write your code here` comment, and before the `return {}` command
+  5. **JavaScript Code:** Paste this code under the `// write your code here` comment, and before the `return {}` command
 
     ```javascript
     // Secret key and ClientId - copy from your PayPal account click on the app here https://developer.paypal.com/developer/applications/  
@@ -378,11 +377,10 @@ Use the following steps to add an on-demand action that registers a payment with
     ;
     ```
   6. Replace the following items in the code above with your specific application configuration
-    1. PayPal ClientId and Secret
-    2. When moving to production , need to replace PayPal sandbox url with the live one
+    1. Your PayPal ClientId and Secret
+    2. The PayPal URL ( Note - make sure to change the sandbox URL to the live version when deploying)
   7. Press "Save"
-  
-  
+
 ## Run the app
   
 Now we're ready to run the app! In your terminal window, simply type:
@@ -393,18 +391,21 @@ Now we're ready to run the app! In your terminal window, simply type:
 
 At this point, your application is running! You can access it at **[http://localhost:3000](http://localhost:3000)**.
 
-When redirected to PayPal site use this credentials 
-username:paypalTest1@backand.com password:12345678 
+When redirected to PayPa's site use these credentials:
+
+* username: `paypalTest1@backand.com`
+* password: `12345678`
+
 ## Code Review
 
-From this point, we only have a few steps left before we can complete our PayPal integration. Review the following code and copy it into your app in order to get your Backand app talking to PayPal.
+At this point, there are only a few steps remaining before we can call our PayPal integration completed. Review the following code and copy it into your app in order to get your Backand app talking to PayPal.
 
 
-#### Calling Back& action to prepare a PayPal payment
+#### Calling a Back& action to prepare a PayPal payment
 
-The method **self.charge** in file **/client/src/app/paypal/paypal.js** gets the form's data and makes a call to makePayPalPayment function which is a wrapper for the Backand Action -PayPalPayment ,
-we created earlier on step 2. This  sets up a payment in PayPal, by getting the PayPal token and calling the PayPal payment API (more on this in a moment).
-The first payment object that PayPal return contains the url of the user confirm payment form in PayPal, the on-demand action -PayPalPayment will return this url and the code redirect the user to PayPal confirmations form 
+The method **self.charge** in file **/client/src/app/paypal/paypal.js** gets the form's data and makes a call to the makePayPalPayment function, which is a wrapper for the Backand Action 'PayPalPayment' we created earlier in step 2. This  sets up a payment in PayPal by obtaining the PayPal token and calling the PayPal payment API (more on this in a moment).
+
+The first payment object that PayPal returns contains the url of the user's "Confirm Payment" form in PayPal. The on-demand action `PayPalPayment` will return this url, and the code redirects the user to PayPal's confirmation form:
 
 ```javascript
   self.charge = function () {
@@ -430,7 +431,9 @@ The first payment object that PayPal return contains the url of the user confirm
           });
       }
 ```
-After the user confirm the payment in PayPal , PayPal then redirect to this page again but now it adds the payments details to the query string, these parameters should be sent again to PayPal to conclude the payment( which is done by using makePayPalApproval Backand service and the Backand Action from step 3 )
+
+After the user has confirmed the payment with PayPal, PayPal redirects the user back to your app, but this time it includes the payment details in the query string. These parameters need to be sent back to PayPal in order to conclude the payment. This is accomplished by using the `makePayPalApproval` Backand service, and the custom action we created in step 3:
+
 ```javascript
     //check if this is a redirect from PayPal , after the user approves the payment
     // PayPal adds PayerID and  paymentId to the return url we give them
@@ -446,9 +449,10 @@ After the user confirm the payment in PayPal , PayPal then redirect to this page
       )
     }
 ```
+
 #### Backand Service to Call an On-Demand Action
 
-The method **factory.makePayPalPayment** in the file **/client/src/common/services/backandService.js** calls the on-demand action -PayPalPayment we declared earlier in step 2. You must send the parameter **amount**, though you can send additional parameters as needed.
+The method **factory.makePayPalPayment** in the file **/client/src/common/services/backandService.js** calls the on-demand action `PayPalPayment` we declared earlier in step 2. You must send the parameter **amount**, though you can send additional parameters as needed.
 
 ```javascript
     factory.makePayPalPayment = function (amount) {
@@ -465,7 +469,8 @@ The method **factory.makePayPalPayment** in the file **/client/src/common/servic
     };
 ```
 
-The method **factory.makePayPalApproval** in the file **/client/src/common/services/backandService.js** calls the on-demand action -PayPalApproval we declared earlier in step 3. You must send the parameters **payerId** and **paymentId** which PayPal implanted in the return url after the user confirms the payment in PayPal site 
+The method **factory.makePayPalApproval** in the file **/client/src/common/services/backandService.js** calls the on-demand action `PayPalApproval` we declared in step 3. You must send the parameters **payerId** and **paymentId**, which PayPal provided as query paramters when redirecting the user from the confirm payment page:
+
 ```javascript
     factory.makePayPalApproval = function (payerId, paymentId) {
       return $http({
@@ -484,4 +489,4 @@ The method **factory.makePayPalApproval** in the file **/client/src/common/servi
 
 ### License
 
-See the LICENSE file
+See the LICENSE file for details on this app's license.
